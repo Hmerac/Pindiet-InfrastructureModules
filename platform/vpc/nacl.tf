@@ -1,6 +1,6 @@
 # Create ACL for public subnets
 resource "aws_network_acl" "public_nacl" {
-  vpc_id = "${aws_vpc.main_vpc}"
+  vpc_id = "${aws_vpc.main_vpc.id}"
   subnet_ids = "${element(data.aws_subnet_ids.public_subnets.id, count.index)}"
 }
 
