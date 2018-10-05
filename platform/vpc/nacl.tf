@@ -1,8 +1,10 @@
+# Create ACL for public subnets
 resource "aws_network_acl" "public_nacl" {
   vpc_id = "${aws_vpc.main_vpc}"
   subnet_ids = "${element(data.aws_subnet_ids.public_subnets.id, count.index)}"
 }
 
+# Create ssh ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_ssh_rule" {
   network_acl_id = "${aws_network_acl.public_nacl}"
   rule_number    = 100
@@ -14,6 +16,7 @@ resource "aws_network_acl_rule" "public_nacl_ssh_rule" {
   to_port        = 22
 }
 
+# Create http ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_http_rule" {
   network_acl_id = "${aws_network_acl.public_nacl}"
   rule_number    = 101
@@ -25,6 +28,7 @@ resource "aws_network_acl_rule" "public_nacl_http_rule" {
   to_port        = 80
 }
 
+# Create https ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_https_rule" {
   network_acl_id = "${aws_network_acl.public_nacl}"
   rule_number    = 102

@@ -11,7 +11,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 # Create NAT GW
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = "${aws_eip.ng_elastic_ip.id}"
-  subnet_id     = "${aws_subnet.public_subnet_1}"
+  subnet_id     = "${aws_subnet.public_subnet_1.id}"
 
   depends_on = ["aws_internet_gateway.internet_gateway"]
 
