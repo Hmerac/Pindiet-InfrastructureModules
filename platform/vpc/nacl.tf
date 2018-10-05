@@ -6,7 +6,7 @@ resource "aws_network_acl" "public_nacl" {
 
 # Create ssh ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_ssh_rule" {
-  network_acl_id = "${aws_network_acl.public_nacl}"
+  network_acl_id = "${aws_network_acl.public_nacl.id}"
   rule_number    = 100
   egress         = true
   protocol       = "tcp"
@@ -18,7 +18,7 @@ resource "aws_network_acl_rule" "public_nacl_ssh_rule" {
 
 # Create http ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_http_rule" {
-  network_acl_id = "${aws_network_acl.public_nacl}"
+  network_acl_id = "${aws_network_acl.public_nacl.id}"
   rule_number    = 101
   egress         = true
   protocol       = "tcp"
@@ -30,7 +30,7 @@ resource "aws_network_acl_rule" "public_nacl_http_rule" {
 
 # Create https ingress-egress for public ACL
 resource "aws_network_acl_rule" "public_nacl_https_rule" {
-  network_acl_id = "${aws_network_acl.public_nacl}"
+  network_acl_id = "${aws_network_acl.public_nacl.id}"
   rule_number    = 102
   egress         = true
   protocol       = "tcp"
