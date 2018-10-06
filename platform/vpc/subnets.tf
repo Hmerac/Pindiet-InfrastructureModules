@@ -45,3 +45,11 @@ resource "aws_subnet" "private_subnet_2" {
     Tier = "Private"
   }
 }
+
+output "public_subnet_id_list" {
+  value = ["${aws_subnet.public_subnet_1.id}, ${aws_subnet.public_subnet_2.id}"]
+}
+
+output "private_subnet_id_list" {
+  value = ["${aws_subnet.private_subnet_1.id}, ${aws_subnet.private_subnet_2.id}"]
+}
