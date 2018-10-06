@@ -28,34 +28,7 @@ resource "aws_security_group" "ext_alb_sg" {
     protocol     = "-1"
     from_port    = 0
     to_port      = 0
-    cidr_blocks  = "${aws_security_group.ext_ec2_sg.id}"
-  }
-}
-
-resource "aws_security_group" "ext_ec2_sg" {
-  name           = "${var.environment}-${var.ext_alb_name}-SG"
-  description    = "Allow SSH to External EC2s"
-  vpc_id         = "${data.terraform_remote_state.vpc_state.id}"
-
-  ingress {
-    protocol     = "TCP"
-    from_port    = 22
-    to_port      = 22
-
-    # Dynamic Port Range for Application Load Balancer
-    security_groups = ["${aws_security_group.ext_alb_sg.id}"]
-  }
-
-  egress {
-    protocol     = "-1"
-    from_port    = 0
-    to_port      = 0
-    cidr_blocks  = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Name         = "EC2-SG"
-    Environemnt  = "${var.environment}"
+    cidr_blocks  = "${aws_security_group.ec2_sg.id}"
   }
 }
 
@@ -68,32 +41,32 @@ resource "aws_security_group" "int_alb_sg" {
     protocol    = "TCP"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["${data.terraform_remote_state.vpc_state.public_subnet_id_list}"]
+    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
   }
 
   ingress {
     protocol    = "TCP"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
   }
 
   ingress {
     protocol    = "TCP"
     from_port   = 443
     to_port     = 443
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
   }
 
   egress {
     protocol     = "-1"
     from_port    = 0
     to_port      = 0
-    cidr_blocks  = "${aws_security_group.int_ec2_sg.id}"
+    cidr_blocks  = "${aws_security_group.ec2_sg.id}"
   }
 }
 
-resource "aws_security_group" "int_ec2_sg" {
+resource "aws_security_group" "ec2_sg" {
   name           = "${var.environment}-${var.int_alb_name}-SG"
   description    = "Allow SSH, HTTP, HTTPS to Internal EC2s"
   vpc_id         = "${data.terraform_remote_state.vpc_state.id}"
