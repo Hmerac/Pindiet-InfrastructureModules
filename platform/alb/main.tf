@@ -61,41 +61,41 @@ resource "aws_alb_listener" "int_alb_listener" {
 }
 
 resource "aws_alb_target_group" "front" {
-  name     = "${var.target_group_name}"
+  name     = "${var.ext_target_group_name}"
   port     = "80"
   protocol = "HTTP"
-  vpc_id   = "${var.vpc_id}"
+  vpc_id   = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/${element(split(",", var.health_check_path), count.index + 1 )}"
+    path                = "/"
   }
 
   tags {
-    Name        = "${var.target_group_name}"
+    Name        = "${var.ext_target_group_name}"
     Environment = "${var.environment}"
   }
 }
 
 resource "aws_alb_target_group" "back" {
-  name     = "${var.target_group_name}"
+  name     = "${var.int_target_group_name}"
   port     = "80"
   protocol = "HTTP"
-  vpc_id   = "${var.vpc_id}"
+  vpc_id   = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/${var.health_check_path}"
+    path                = "/"
   }
 
   tags {
-    Name        = "${var.target_group_name}"
+    Name        = "${var.int_target_group_name}"
     Environment = "${var.environment}"
   }
 }

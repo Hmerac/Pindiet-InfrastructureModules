@@ -12,3 +12,7 @@ resource "aws_vpc" "main_vpc" {
     Description = "Main VPC to hold seperate environments"
   }
 }
+
+output "vpc_id" {
+  value = "${aws_vpc.main_vpc.id}"
+}
