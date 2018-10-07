@@ -4,32 +4,34 @@ resource "aws_security_group" "ext_alb_sg" {
   vpc_id        = "${data.terraform_remote_state.vpc_state.id}"
 
   ingress {
-    protocol    = "TCP"
+    protocol    = "tcp"
     from_port   = 22
     to_port     = 22
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    protocol    = "TCP"
+    protocol    = "tcp"
     from_port   = 80
     to_port     = 80
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    protocol    = "TCP"
+    protocol    = "tcp"
     from_port   = 443
     to_port     = 443
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
 
-  egress {
-    protocol     = "-1"
-    from_port    = 0
-    to_port      = 0
-    cidr_blocks  = "${aws_security_group.ec2_sg.id}"
-  }
+resource "aws_security_group_rule" "ext_alb_to_ec2" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "tcp"
+  security_group_id = "${aws_security_group.ec2_sg.id}"
+  source_security_group_id = "${aws_security_group.ext_alb_sg.id}"
 }
 
 resource "aws_security_group" "int_alb_sg" {
@@ -38,47 +40,26 @@ resource "aws_security_group" "int_alb_sg" {
   vpc_id        = "${data.terraform_remote_state.vpc_state.id}"
 
   ingress {
-    protocol    = "TCP"
-    from_port   = 22
-    to_port     = 22
-    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
-  }
-
-  ingress {
-    protocol    = "TCP"
+    protocol    = "tcp"
     from_port   = 80
     to_port     = 80
     cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
   }
+}
 
-  ingress {
-    protocol    = "TCP"
-    from_port   = 443
-    to_port     = 443
-    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
-  }
-
-  egress {
-    protocol     = "-1"
-    from_port    = 0
-    to_port      = 0
-    cidr_blocks  = "${aws_security_group.ec2_sg.id}"
-  }
+resource "aws_security_group_rule" "int_alb_to_ec2" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "tcp"
+  security_group_id = "${aws_security_group.ec2_sg.id}"
+  source_security_group_id = "${aws_security_group.int_alb_sg.id}"
 }
 
 resource "aws_security_group" "ec2_sg" {
   name           = "${var.environment}-${var.int_alb_name}-SG"
-  description    = "Allow SSH, HTTP, HTTPS to Internal EC2s"
+  description    = "Allow all ports to Internal EC2s"
   vpc_id         = "${data.terraform_remote_state.vpc_state.id}"
-
-  ingress {
-    protocol     = "TCP"
-    from_port    = 22
-    to_port      = 22
-
-    # Dynamic Port Range for Application Load Balancer
-    security_groups = ["${aws_security_group.int_alb_sg.id}"]
-  }
 
   egress {
     protocol     = "-1"
@@ -91,4 +72,22 @@ resource "aws_security_group" "ec2_sg" {
     Name         = "EC2-SG"
     Environemnt  = "${var.environment}"
   }
+}
+
+resource "aws_security_group_rule" "from_ext_alb_to_ec2" {
+  type = "ingress"
+  from_port = 0
+  to_port = 0
+  protocol = "tcp"
+  security_group_id = "${aws_security_group.ec2_sg.id}"
+  source_security_group_id = "${aws_security_group.ext_alb_sg.id}"
+}
+
+resource "aws_security_group_rule" "from_int_alb_to_ec2" {
+  type = "ingress"
+  from_port = 0
+  to_port = 0
+  protocol = "tcp"
+  security_group_id = "${aws_security_group.ec2_sg.id}"
+  source_security_group_id = "${aws_security_group.int_alb_sg.id}"
 }
