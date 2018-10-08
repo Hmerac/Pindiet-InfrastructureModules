@@ -9,8 +9,6 @@ resource "aws_alb" "ext_alb" {
   security_groups             = ["${aws_security_group.ext_alb_sg.id}"]
   subnets                     = ["${data.aws_subnet_ids.subnet_source.ids}"]
 
-  enable_deletion_protection  = true
-
   access_logs {
     bucket  = "${aws_s3_bucket.ext_alb_s3_bucket.id}"
     prefix  = "${var.ext_alb_prefix}"
