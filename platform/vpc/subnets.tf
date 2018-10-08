@@ -4,6 +4,8 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block = "10.0.0.0/24"
   availability_zone = "${data.aws_availability_zones.available.names[0]}"
 
+  map_public_ip_on_launch = true
+
   tags {
     Name = "Public Subnet 1"
     Tier = "Public"
@@ -16,8 +18,10 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block = "10.0.1.0/24"
   availability_zone = "${data.aws_availability_zones.available.names[1]}"
 
+  map_public_ip_on_launch = true
+
   tags {
-    Name = "Private Subnet 2"
+    Name = "Public Subnet 2"
     Tier = "Public"
   }
 }
