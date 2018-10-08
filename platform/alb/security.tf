@@ -1,14 +1,7 @@
 resource "aws_security_group" "ext_alb_sg" {
   name          = "${var.environment}-${var.ext_alb_name}-SG"
-  description   = "Allow ingress SSH, HTTP, HTTPS to External ALB"
-  vpc_id        = "${data.terraform_remote_state.vpc_state.id}"
-
-  ingress {
-    protocol    = "tcp"
-    from_port   = 22
-    to_port     = 22
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  description   = "Allow ingress HTTP, HTTPS to External ALB"
+  vpc_id        = "${data.aws_vpc.vpc_source.id}"
 
   ingress {
     protocol    = "tcp"
@@ -23,43 +16,26 @@ resource "aws_security_group" "ext_alb_sg" {
     to_port     = 443
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
 
-resource "aws_security_group_rule" "ext_alb_to_ec2" {
-  type = "egress"
-  from_port = 0
-  to_port = 0
-  protocol = "tcp"
-  security_group_id = "${aws_security_group.ec2_sg.id}"
-  source_security_group_id = "${aws_security_group.ext_alb_sg.id}"
-}
-
-resource "aws_security_group" "int_alb_sg" {
-  name          = "${var.environment}-${var.int_alb_name}-SG"
-  description   = "Allow SSH, HTTP, HTTPS to Internal ALB"
-  vpc_id        = "${data.terraform_remote_state.vpc_state.id}"
-
-  ingress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
-    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-resource "aws_security_group_rule" "int_alb_to_ec2" {
-  type = "egress"
-  from_port = 0
-  to_port = 0
-  protocol = "tcp"
-  security_group_id = "${aws_security_group.ec2_sg.id}"
-  source_security_group_id = "${aws_security_group.int_alb_sg.id}"
-}
-
-resource "aws_security_group" "ec2_sg" {
-  name           = "${var.environment}-${var.int_alb_name}-SG"
+resource "aws_security_group" "container_instance_sg" {
+  name           = "${var.environment}-EC2-SG"
   description    = "Allow all ports to Internal EC2s"
-  vpc_id         = "${data.terraform_remote_state.vpc_state.id}"
+  vpc_id         = "${data.aws_vpc.vpc_source.id}"
+
+  ingress {
+    protocol  = "tcp"
+    from_port = 22
+    to_port   = 22
+    cidr_blocks  = ["0.0.0.0/0"] # TODO: Add our specific IPs here to SSH
+  }
 
   egress {
     protocol     = "-1"
@@ -76,18 +52,18 @@ resource "aws_security_group" "ec2_sg" {
 
 resource "aws_security_group_rule" "from_ext_alb_to_ec2" {
   type = "ingress"
-  from_port = 0
-  to_port = 0
+  from_port = 8080
+  to_port = 8080
   protocol = "tcp"
-  security_group_id = "${aws_security_group.ec2_sg.id}"
+  security_group_id = "${aws_security_group.container_instance_sg.id}"
   source_security_group_id = "${aws_security_group.ext_alb_sg.id}"
 }
 
-resource "aws_security_group_rule" "from_int_alb_to_ec2" {
+resource "aws_security_group_rule" "from_ext_alb_to_ec2" {
   type = "ingress"
-  from_port = 0
-  to_port = 0
+  from_port = 32768
+  to_port = 61000
   protocol = "tcp"
-  security_group_id = "${aws_security_group.ec2_sg.id}"
-  source_security_group_id = "${aws_security_group.int_alb_sg.id}"
+  security_group_id = "${aws_security_group.container_instance_sg.id}"
+  source_security_group_id = "${aws_security_group.ext_alb_sg.id}"
 }

@@ -1,10 +1,6 @@
 variable "ext_alb_name" {}
-variable "int_alb_name" {}
 variable "environment" {}
 variable "ext_alb_prefix" {}
-variable "int_alb_prefix" {}
 variable "ext_target_group_name" {}
-variable "int_target_group_name" {}
-variable "vpc_state_bucket" {}
-variable "vpc_state_key" {}
 variable "region" {}
+variable "vpc_id" {}

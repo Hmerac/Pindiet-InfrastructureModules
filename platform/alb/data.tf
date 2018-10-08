@@ -1,9 +1,7 @@
-data "terraform_remote_state" "vpc_state" {
-  backend = "s3"
+data "aws_vpc" "vpc_source" {
+  id = "${var.vpc_id}"
+}
 
-  config {
-    bucket = "${var.vpc_state_bucket}"
-    key    = "${var.vpc_state_key}"
-    region = "${var.region}"
-  }
+data "aws_subnet_ids" "subnet_source" {
+  vpc_id = "${data.aws_vpc.vpc_source.id}"
 }
