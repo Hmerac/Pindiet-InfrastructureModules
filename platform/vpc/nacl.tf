@@ -1,7 +1,7 @@
 # Create ACL for public subnets
 resource "aws_network_acl" "public_nacl" {
   vpc_id = "${aws_vpc.main_vpc.id}"
-  subnet_ids = ["${data.aws_subnet_ids.public_subnets.ids}"]
+  subnet_ids = ["${aws_subnet.public_subnet_1.id}", "${aws_subnet.public_subnet_2}"]
 }
 
 # Create ssh ingress-egress for public ACL
