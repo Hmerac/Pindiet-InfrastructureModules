@@ -1,7 +1,7 @@
 resource "aws_security_group" "ext_alb_sg" {
   name          = "${var.environment}-${var.ext_alb_name}-SG"
   description   = "Allow ingress HTTP, HTTPS to External ALB"
-  vpc_id        = "${data.aws_vpc.vpc_source.id}"
+  vpc_id        = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   ingress {
     protocol    = "tcp"
@@ -28,7 +28,7 @@ resource "aws_security_group" "ext_alb_sg" {
 resource "aws_security_group" "container_instance_sg" {
   name           = "${var.environment}-EC2-SG"
   description    = "Allow all ports to Internal EC2s"
-  vpc_id         = "${data.aws_vpc.vpc_source.id}"
+  vpc_id         = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   ingress {
     protocol  = "tcp"

@@ -49,7 +49,7 @@ resource "aws_alb_target_group" "alb_target_group" {
   name     = "${var.ext_target_group_name}"
   port     = "80"
   protocol = "HTTP"
-  vpc_id   = "${data.aws_vpc.vpc_source.id}"
+  vpc_id   = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   health_check {
     healthy_threshold   = 3
