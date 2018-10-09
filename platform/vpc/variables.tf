@@ -11,13 +11,16 @@ variable "environment" {
 }
 
 variable "public_subnets_cidr" {
+  type        = "list"
   description = "IP ranges of public subnets"
 }
 
 variable "private_subnets_cidr" {
+  type        = "list"
   description = "IP ranges of private subnets"
 }
 
 variable "availability_zones" {
+  type        = "list"
   description = "Selected availability zones(Probably two for cost cutting)"
 }
