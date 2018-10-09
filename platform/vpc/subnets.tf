@@ -30,9 +30,9 @@ resource "aws_subnet" "private_subnet" {
 }
 
 output "public_subnet_id_list" {
-  value = ["${aws_subnet.public_subnet.id}"]
+  value = ["${aws_subnet.public_subnet.*.id}"]
 }
 
 output "private_subnet_id_list" {
-  value = ["${aws_subnet.private_subnet.id}"]
+  value = ["${aws_subnet.public_subnet.*.id}"]
 }
