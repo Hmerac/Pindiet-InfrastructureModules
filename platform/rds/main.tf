@@ -3,7 +3,7 @@ terraform {
 }
 
 resource "aws_db_instance" "rds" {
-  identifier             = "${var.environment}-DB"
+  identifier             = "${var.environment}-${var.identifier}"
   allocated_storage      = "${var.allocated_storage}"
   engine                 = "mysql"
   engine_version         = "5.7"

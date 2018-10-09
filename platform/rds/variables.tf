@@ -46,3 +46,7 @@ variable "database_username" {
 variable "database_password" {
   description = "RDS master password"
 }
+
+variable "identifier" {
+  description = "Identifier of RDS"
+}
