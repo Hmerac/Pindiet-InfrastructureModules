@@ -19,7 +19,7 @@ resource "aws_security_group" "default" {
   }
 
   tags {
-    Name        = "VPC-Default-SG"
+    Name        = "${var.environment}-VPC-Default-SG"
     Environment = "${var.environment}"
   }
 }
