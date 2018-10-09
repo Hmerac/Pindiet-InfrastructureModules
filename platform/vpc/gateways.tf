@@ -15,7 +15,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   depends_on    = ["aws_internet_gateway.internet_gateway"]
 
   tags {
-    Name = "${var.environment}-Main-NG"
+    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-NGW"
     Environment = "${var.environment}"
   }
 }
