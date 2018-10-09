@@ -17,11 +17,23 @@ resource "aws_security_group" "ext_alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    protocol    = "icmp"
+    from_port   = 8
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port = 0
     to_port   = 0
     protocol  = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "${var.environment}-${var.ext_alb_name}-SG"
+    Environment = "${var.environment}"
   }
 }
 

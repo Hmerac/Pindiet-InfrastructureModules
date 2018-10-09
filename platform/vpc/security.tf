@@ -1,4 +1,4 @@
-resource "aws_security_group" "default" {
+resource "aws_security_group" "default_vpc_sg" {
   name        = "${var.environment}-VPC-Default-SG"
   description = "Default security group to allow inbound/outbound from the VPC"
   vpc_id      = "${aws_vpc.vpc.id}"
