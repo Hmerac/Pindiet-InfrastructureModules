@@ -2,6 +2,8 @@ terraform {
   backend "s3" {}
 }
 
+# TODO: Add another rule for Memory
+# TODO: Add other rules for other services
 resource "aws_appautoscaling_target" "auth_autoscaling_target" {
   service_namespace  = "ecs"
   resource_id        = "service/${data.terraform_remote_state.vpc_state.ecs_cluster_name}/${aws_ecs_service.auth.name}"
