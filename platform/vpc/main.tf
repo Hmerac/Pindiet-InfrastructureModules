@@ -4,8 +4,8 @@ terraform {
 }
 
 # Create the main VPC
-resource "aws_vpc" "main_vpc" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_vpc" "vpc" {
+  cidr_block = "${var.vpc_cidr_block}"
 
   tags {
     Name = "${var.vpc_name}"
@@ -14,9 +14,9 @@ resource "aws_vpc" "main_vpc" {
 }
 
 output "vpc_id" {
-  value = "${aws_vpc.main_vpc.id}"
+  value = "${aws_vpc.vpc.id}"
 }
 
 output "vpc_cidr_block" {
-  value = "${aws_vpc.main_vpc.cidr_block}"
+  value = "${aws_vpc.vpc.cidr_block}"
 }

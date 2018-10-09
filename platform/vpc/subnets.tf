@@ -1,59 +1,38 @@
-# Create a public subnet with eu-central-1a AZ
-resource "aws_subnet" "public_subnet_1" {
-  vpc_id     = "${aws_vpc.main_vpc.id}"
-  cidr_block = "10.0.0.0/24"
-  availability_zone = "${data.aws_availability_zones.available.names[0]}"
-
+# Create a public subnet for each AZ
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  count                   = "${length(var.public_subnets_cidr)}"
+  cidr_block              = "${element(var.public_subnets_cidr, count.index)}"
+  availability_zone       = "${element(var.availability_zones, count.index)}"
   map_public_ip_on_launch = true
 
   tags {
-    Name = "Public Subnet 1"
-    Tier = "Public"
+    Name        = "Public-Subnet-${count.index}"
+    Environment = "${var.environment}"
+    AZ          = "${element(var.availability_zones, count.index)}"
+    Type        = "Public"
   }
 }
 
-# Create a public subnet with eu-central-1b AZ
-resource "aws_subnet" "public_subnet_2" {
-  vpc_id     = "${aws_vpc.main_vpc.id}"
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "${data.aws_availability_zones.available.names[1]}"
-
-  map_public_ip_on_launch = true
-
-  tags {
-    Name = "Public Subnet 2"
-    Tier = "Public"
-  }
-}
-
-# Create a private subnet with eu-central-1a AZ
-resource "aws_subnet" "private_subnet_1" {
-  vpc_id     = "${aws_vpc.main_vpc.id}"
-  cidr_block = "10.0.2.0/24"
-  availability_zone = "${data.aws_availability_zones.available.names[0]}"
+# Create a private subnet for each AZ
+resource "aws_subnet" "private_subnet" {
+  vpc_id                  = "${aws_vpc.vpc.id}"
+  count                   = "${length(var.public_subnets_cidr)}"
+  cidr_block              = "${element(var.private_subnets_cidr, count.index)}"
+  availability_zone       = "${element(var.availability_zones, count.index)}"
 
   tags {
-    Name = "Private Subnet 1"
-    Tier = "Private"
-  }
-}
-
-# Create a private subnet with eu-central-1b AZ
-resource "aws_subnet" "private_subnet_2" {
-  vpc_id     = "${aws_vpc.main_vpc.id}"
-  cidr_block = "10.0.3.0/24"
-  availability_zone = "${data.aws_availability_zones.available.names[1]}"
-
-  tags {
-    Name = "Private Subnet 2"
-    Tier = "Private"
+    Name        = "Private-Subnet-${count.index}"
+    Environment = "${var.environment}"
+    AZ          = "${element(var.availability_zones, count.index)}"
+    Type        = "Private"
   }
 }
 
 output "public_subnet_id_list" {
-  value = ["${aws_subnet.public_subnet_1.id}, ${aws_subnet.public_subnet_2.id}"]
+  value = ["${aws_subnet.public_subnet.id}"]
 }
 
 output "private_subnet_id_list" {
-  value = ["${aws_subnet.private_subnet_1.id}, ${aws_subnet.private_subnet_2.id}"]
+  value = ["${aws_subnet.private_subnet.id}"]
 }
