@@ -1,3 +1,7 @@
+terraform {
+  backend "s3" {}
+}
+
 resource "aws_db_instance" "rds" {
   identifier             = "${var.environment}-DB"
   allocated_storage      = "${var.allocated_storage}"
