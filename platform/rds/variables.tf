@@ -7,6 +7,7 @@ variable "environment" {
 }
 
 variable "availability_zones" {
+  type        = "list"
   description = "Selected availability zones(Probably two for cost cutting)"
 }
 

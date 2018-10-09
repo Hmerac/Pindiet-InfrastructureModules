@@ -1,5 +1,5 @@
 data "template_file" "user_data" {
-  template = "${file("${path.module}/scripts/user_data.sh")}"
+  template = "${file("${path.module}/scripts/user-data.sh")}"
 }
 
 data "terraform_remote_state" "private_subnet_source" {
