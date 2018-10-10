@@ -6,7 +6,7 @@ resource "aws_alb" "ext_alb" {
   name                        = "${var.ext_alb_name}"
   internal                    = false
   load_balancer_type          = "application"
-  security_groups             = ["${data.terraform_remote_state.vpc_state.default_vpc_sg.id}", "${aws_security_group.ext_alb_sg.id}"]
+  security_groups             = ["${data.terraform_remote_state.vpc_state.vpc_id}", "${aws_security_group.ext_alb_sg.id}"]
   subnets                     = ["${data.terraform_remote_state.vpc_state.public_subnet_id_list}"]
 
   access_logs {
