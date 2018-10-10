@@ -10,7 +10,7 @@ resource "aws_alb" "ext_alb" {
   subnets                     = ["${data.terraform_remote_state.vpc_state.public_subnet_id_list}"]
 
   access_logs {
-    bucket  = "${aws_s3_bucket.ext_alb_s3_bucket.id}"
+    bucket  = "${aws_s3_bucket.ext_alb_s3_bucket.bucket}"
     prefix  = "${var.ext_alb_prefix}"
     enabled = true
   }

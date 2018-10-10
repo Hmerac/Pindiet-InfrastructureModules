@@ -1,3 +1,5 @@
+data "aws_elb_service_account" "main" {}
+
 data "terraform_remote_state" "vpc_state" {
   backend = "s3"
 
