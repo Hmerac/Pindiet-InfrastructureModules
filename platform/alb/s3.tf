@@ -2,7 +2,17 @@ resource "aws_s3_bucket" "ext_alb_s3_bucket" {
   bucket = "${var.environment}-${var.ext_alb_name}"
   acl    = "private"
 
-  policy = <<POLICY
+  policy = "${aws_s3_bucket_policy.ext_alb_s3_bucket_access_logs_policy.id}"
+
+  tags {
+    Name        = "${var.environment}-${var.ext_alb_name}-S3"
+    Environment = "${var.environment}"
+  }
+}
+
+resource "aws_s3_bucket_policy" "ext_alb_s3_bucket_access_logs_policy" {
+  bucket = "${aws_s3_bucket.ext_alb_s3_bucket.id}"
+  policy =<<EOF
 {
   "Id": "Policy",
   "Version": "2012-10-17",
@@ -21,10 +31,5 @@ resource "aws_s3_bucket" "ext_alb_s3_bucket" {
     }
   ]
 }
-POLICY
-
-  tags {
-    Name        = "${var.environment}-${var.ext_alb_name}-S3"
-    Environment = "${var.environment}"
-  }
+EOF
 }
