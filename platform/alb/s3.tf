@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "ext_alb_s3_bucket" {
       "Resource": "arn:aws:s3:::${var.environment}-${var.ext_alb_name}/*",
       "Principal": {
         "AWS": [
-          "${data.aws_elb_service_account}"
+          "${data.aws_elb_service_account.main.arn}"
         ]
       }
     }
