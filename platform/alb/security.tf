@@ -39,7 +39,7 @@ resource "aws_security_group" "ext_alb_sg" {
 
 resource "aws_security_group" "container_instance_sg" {
   name           = "${var.environment}-EC2-SG"
-  description    = "Allow all ports to Internal EC2s"
+  description    = "Allow SSH to Internal EC2s"
   vpc_id         = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   ingress {
