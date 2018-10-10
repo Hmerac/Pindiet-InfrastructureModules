@@ -5,7 +5,7 @@ terraform {
 
 # Create ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name =
+  name = "${var.environment}-${var.cluster_name}"
 }
 
 # Write output values to terraform.state file in S3
