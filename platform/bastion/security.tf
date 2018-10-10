@@ -7,7 +7,7 @@ resource "aws_security_group" "bastion_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${data.terraform_remote_state.vpc_state.cidr_block}"]
+    cidr_blocks = ["${data.terraform_remote_state.vpc_state.vpc_cidr_block}"]
     description = "Allows only port 22 for VPC"
   }
 
