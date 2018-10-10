@@ -52,3 +52,11 @@ resource "aws_alb_target_group" "alb_target_group" {
     Environment = "${var.environment}"
   }
 }
+
+output "alb_target_group_id" {
+  value = "${aws_alb_target_group.alb_target_group.id}"
+}
+
+output "alb_endpoint" {
+  value = "${aws_alb.ext_alb.dns_name}"
+}
