@@ -11,7 +11,6 @@ resource "aws_alb" "ext_alb" {
 
   access_logs {
     bucket  = "${aws_s3_bucket.ext_alb_s3_bucket.bucket}"
-    prefix  = "${var.ext_alb_prefix}"
     enabled = true
   }
 
