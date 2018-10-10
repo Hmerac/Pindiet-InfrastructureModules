@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = "${aws_eip.ng_elastic_ip.id}"
   subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
-  depends_on    = ["aws_internet_gateway.internet_gateway"]
+  depends_on    = ["aws_subnet.public_subnet", "aws_internet_gateway.internet_gateway"]
 
   tags {
     Name        = "${var.environment}-${element(var.availability_zones, count.index)}-NGW"
