@@ -23,3 +23,7 @@ resource "aws_security_group" "default_vpc_sg" {
     Environment = "${var.environment}"
   }
 }
+
+output "default_vpc_sg" {
+  value = "${aws_security_group.default_vpc_sg.id}"
+}
