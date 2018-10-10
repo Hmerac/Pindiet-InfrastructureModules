@@ -2,8 +2,6 @@ resource "aws_s3_bucket" "ext_alb_s3_bucket" {
   bucket = "${var.environment}-${var.ext_alb_name}"
   acl    = "private"
 
-  policy = "${aws_s3_bucket_policy.ext_alb_s3_bucket_access_logs_policy.id}"
-
   tags {
     Name        = "${var.environment}-${var.ext_alb_name}-S3"
     Environment = "${var.environment}"
