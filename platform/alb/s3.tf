@@ -12,10 +12,10 @@ resource "aws_s3_bucket" "ext_alb_s3_bucket" {
         "s3:PutObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${var.environment}-${var.ext_alb_name}/*",
+      "Resource": "arn:aws:s3:::${var.environment}-${var.ext_alb_name}/AWSLogs/*",
       "Principal": {
         "AWS": [
-          "${data.aws_elb_service_account.main.arn}"
+          "${data.aws_elb_service_account.elb_service_account.arn}"
         ]
       }
     }

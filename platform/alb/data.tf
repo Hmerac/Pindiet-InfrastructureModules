@@ -1,4 +1,4 @@
-data "aws_elb_service_account" "main" {}
+data "aws_elb_service_account" "elb_service_account" {}
 
 data "terraform_remote_state" "vpc_state" {
   backend = "s3"
