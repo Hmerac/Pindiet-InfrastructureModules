@@ -3,7 +3,7 @@ terraform {
 }
 
 resource "aws_alb" "ext_alb" {
-  name                        = "${var.ext_alb_name}"
+  name                        = "${var.environment}-${var.ext_alb_name}"
   internal                    = false
   load_balancer_type          = "application"
   security_groups             = ["${data.terraform_remote_state.vpc_state.default_vpc_sg}", "${aws_security_group.ext_alb_sg.id}"]
