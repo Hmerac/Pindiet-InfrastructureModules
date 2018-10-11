@@ -1,3 +1,7 @@
+##################################################
+########                 SG               ########
+##################################################
+# Create Security Group for Bastion
 resource "aws_security_group" "bastion_security_group" {
   name        = "${var.bastion_name}-SG"
   description = "Allows only port 22 for VPC"

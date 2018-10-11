@@ -1,14 +1,20 @@
+##################################################
+########             Backend              ########
+##################################################
 # Configure backend remote state with S3
 terraform {
   backend "s3" {}
 }
 
+##################################################
+########                ECS               ########
+##################################################
 # Create ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.environment}-${var.cluster_name}"
 }
 
-# Write output values to terraform.state file in S3
+# Write output values to the state file in S3 so that other components can use it
 output "ecs_cluster_arn" {
   value = "${aws_ecs_cluster.ecs_cluster.arn}"
 }

@@ -1,6 +1,5 @@
 variable "region" {
   description = "AWS Region of the ECS Cluster"
-  default     = "eu-central-1"
 }
 
 variable "environment" {

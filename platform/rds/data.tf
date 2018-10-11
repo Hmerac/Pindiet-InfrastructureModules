@@ -1,3 +1,7 @@
+##################################################
+########            State Data            ########
+##################################################
+# Create data resource to retrieve required VPC data from its state file in S3
 data "terraform_remote_state" "vpc_state" {
   backend = "s3"
 
