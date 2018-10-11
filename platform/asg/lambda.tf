@@ -1,11 +1,11 @@
 resource "aws_lambda_function" "lambda_function" {
   function_name    = "${var.cluster_name}-instance-monitoring"
-  role             = "${aws_iam_role.ecs_autoscale_role.arn}"
-  handler          = "index.lambda_handler"
-  runtime          = "python2.7"
-  timeout          = "10"
   filename         = "${file("${path.module}/scripts/instance-monitoring.py")}"
-  memory_size      = "128"
+  role             = "${aws_iam_role.ecs_autoscale_role.arn}"
+  handler          = "${var.handler}" #index.lambda_handler
+  runtime          = "${var.runtime}" #python2.7
+  timeout          = "${var.timeout}" #10
+  memory_size      = "${var.memory_size}" #128
 
   vpc_config {
     # TODO: Configure Security Group for the Instances inside Cluster later on

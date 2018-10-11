@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "schedulable_containers_high_alert" {
 
   evaluation_periods = "${var.schedulable_containers_high_evaluation_periods}"
   metric_name        = "${var.metric_name}"
-  namespace          = "EC2 Scaling Metrics"
+  namespace          = "${var.namespace}"
   period             = "${var.schedulable_containers_high_period}"
   statistic          = "${var.statistic_type}"
   threshold          = "${var.schedulable_containers_high_threshold}"
@@ -30,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "schedulable_containers_low_alert" {
 
   evaluation_periods = "${var.schedulable_containers_low_evaluation_periods}"
   metric_name        = "${var.metric_name}"
-  namespace          = "EC2 Scaling Metrics"
+  namespace          = "${var.namespace}"
   period             = "${var.schedulable_containers_low_period}"
   statistic          = "${var.statistic_type}"
   threshold          = "${var.schedulable_containers_low_threshold}"
