@@ -25,7 +25,7 @@ resource "aws_db_instance" "rds" {
   skip_final_snapshot    = true
 
   tags {
-    Name        = "${var.database_name}"
+    Name        = "${var.environment}-${var.database_name}"
     Environment = "${var.environment}"
   }
 }
