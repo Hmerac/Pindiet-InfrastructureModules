@@ -8,6 +8,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
+# TODO: Having one NAT on environments isn't a recommended practice, implement one NAT per AZ later on
 # Create NAT GW
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = "${aws_eip.ng_elastic_ip.id}"
