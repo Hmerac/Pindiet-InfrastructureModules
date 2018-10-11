@@ -1,3 +1,7 @@
+##################################################
+########           Default SG             ########
+##################################################
+# Default VPC Security Group which allows all ingress/egress rules
 resource "aws_security_group" "default_vpc_sg" {
   name        = "${var.environment}-VPC-Default-SG"
   description = "Default security group to allow inbound/outbound from the VPC"
@@ -24,6 +28,7 @@ resource "aws_security_group" "default_vpc_sg" {
   }
 }
 
+# Write output values to the state file in S3 so that other components can use it
 output "default_vpc_sg" {
   value = "${aws_security_group.default_vpc_sg.id}"
 }

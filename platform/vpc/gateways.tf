@@ -1,3 +1,6 @@
+##################################################
+########           Internet GW            ########
+##################################################
 # Create Internet GW
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -8,6 +11,9 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
+##################################################
+########              NAT GW              ########
+##################################################
 # TODO: Having one NAT on environments isn't a recommended practice, implement one NAT per AZ later on
 # Create NAT GW
 resource "aws_nat_gateway" "nat_gateway" {

@@ -1,7 +1,6 @@
 ##################################################
 ########            Public RT             ########
 ##################################################
-
 # Create public route table
 resource "aws_route_table" "public_route_table" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -29,7 +28,7 @@ resource "aws_route_table_association" "public" {
 ##################################################
 ########           Private RT             ########
 ##################################################
-
+# TODO: Will need to create another Private Route Table for another NAT GW
 # Create private route table
 resource "aws_route_table" "private_route_table" {
   vpc_id = "${aws_vpc.vpc.id}"
