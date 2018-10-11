@@ -1,18 +1,38 @@
-resource "aws_cloudwatch_metric_alarm" "auth_service_cpu_high" {
-  alarm_name          = "${var.environment}-${aws_ecs_service.auth.name}-service-cpu-utilization-high"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/ECS"
-  period              = "60"
-  statistic           = "Maximum"
-  threshold           = "85"
+resource "aws_cloudwatch_metric_alarm" "schedulable_containers_high_alert" {
+  actions_enabled     = true
+  alarm_actions       = ["${aws_autoscaling_policy.scale_up_policy.arn}"]
+  alarm_description   = "${var.cluster_name}-schedulablecontainershighalert"
+  alarm_name          = "${var.cluster_name}-schedulablecontainershighalert"
+  comparison_operator = "LessThanOrEqualToThreshold"
 
-  dimensions {
-    ClusterName = "${data.terraform_remote_state.vpc_state.ecs_cluster_name}"
-    ServiceName = "${aws_ecs_service.auth.name}"
+  dimensions = {
+    "ClusterName" = "${var.cluster_name}"
   }
 
-  alarm_actions = ["${aws_appautoscaling_policy.up.arn}"]
-  ok_actions    = ["${aws_appautoscaling_policy.down.arn}"]
+  evaluation_periods = "${var.schedulable_containers_high_evaluation_periods}"
+  metric_name        = "${var.metric_name}"
+  namespace          = "EC2 Scaling Metrics"
+  period             = "${var.schedulable_containers_high_period}"
+  statistic          = "${var.statistic_type}"
+  threshold          = "${var.schedulable_containers_high_threshold}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "schedulable_containers_low_alert" {
+  actions_enabled     = true
+  alarm_actions       = ["${aws_autoscaling_policy.scale_down_policy.arn}"]
+  alarm_description   = "${var.cluster_name}-schedulablecontainerslowalert"
+  alarm_name          = "${var.cluster_name}-schedulablecontainerslowalert"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+
+  dimensions = {
+    "ClusterName" = "${var.cluster_name}"
+  }
+
+  evaluation_periods = "${var.schedulable_containers_low_evaluation_periods}"
+  metric_name        = "${var.metric_name}"
+  namespace          = "EC2 Scaling Metrics"
+  period             = "${var.schedulable_containers_low_period}"
+  statistic          = "${var.statistic_type}"
+  threshold          = "${var.schedulable_containers_low_threshold}"
+  depends_on = ["aws_cloudwatch_metric_alarm.schedulable_containers_high_alert"]
 }

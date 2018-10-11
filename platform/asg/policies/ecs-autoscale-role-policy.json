@@ -2,23 +2,19 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Effect": "Allow",
       "Action": [
-        "ecs:DescribeServices",
-        "ecs:UpdateService"
+        "cloudwatch:*",
+        "sns:*",
+        "ec2:Describe*",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ecs:*",
+        "autoscaling:Describe*",
+        "logs:*"
       ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
       "Effect": "Allow",
-      "Action": [
-        "cloudwatch:DescribeAlarms"
-      ],
-      "Resource": [
-        "*"
-      ]
+      "Resource": "*"
     }
   ]
 }
