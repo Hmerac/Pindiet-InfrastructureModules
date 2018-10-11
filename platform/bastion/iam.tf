@@ -3,7 +3,7 @@
 ##################################################
 # Create IAM Assume Role for Bastion
 resource "aws_iam_role" "bastion_role" {
-  name                = "${var.bastion_name}-Role"
+  name                = "${var.bastion_name}-role"
   assume_role_policy  = "${file("${path.module}/policies/assume-role-policy.json")}"
 }
 
@@ -12,7 +12,7 @@ resource "aws_iam_role" "bastion_role" {
 ##################################################
 # Create IAM Policy for Bastion
 resource "aws_iam_role_policy" "bastion_policy" {
-  name    = "${var.bastion_name}-Policy"
+  name    = "${var.bastion_name}-policy"
   role    = "${aws_iam_role.bastion_role.id}"
   policy  = "${file("${path.module}/policies/role-policy.json")}"
 }
@@ -22,6 +22,6 @@ resource "aws_iam_role_policy" "bastion_policy" {
 ##################################################
 # Create IAM Instance Profile for Bastion so that instance can inherit roles by attaching this
 resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "${var.bastion_name}-Profile"
+  name = "${var.bastion_name}-profile"
   role = "${aws_iam_role.bastion_role.name}"
 }

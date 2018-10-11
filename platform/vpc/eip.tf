@@ -8,7 +8,7 @@ resource "aws_eip" "ng_elastic_ip" {
   depends_on  = ["aws_internet_gateway.internet_gateway"]
 
   tags {
-    Name        = "${var.environment}-NG-EIP"
+    Name        = "${var.environment}-ng-eip"
     Environment = "${var.environment}"
   }
 }

@@ -3,7 +3,7 @@
 ##################################################
 # Create Security Group for Bastion
 resource "aws_security_group" "bastion_security_group" {
-  name        = "${var.bastion_name}-SG"
+  name        = "${var.bastion_name}-sg"
   description = "Allows only port 22 for VPC"
   vpc_id      = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
@@ -23,6 +23,6 @@ resource "aws_security_group" "bastion_security_group" {
   }
 
   tags {
-    Name = "${var.bastion_name}-SG"
+    Name = "${var.bastion_name}-sg"
   }
 }

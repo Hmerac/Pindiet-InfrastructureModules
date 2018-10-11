@@ -6,7 +6,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "${var.environment}-IGW"
+    Name        = "${var.environment}-igw"
     Environment = "${var.environment}"
   }
 }
@@ -22,7 +22,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   depends_on    = ["aws_subnet.public_subnet", "aws_eip.ng_elastic_ip", "aws_internet_gateway.internet_gateway"]
 
   tags {
-    Name        = "${var.environment}-${element(var.availability_zones, 0)}-NGW"
+    Name        = "${var.environment}-${element(var.availability_zones, 0)}-ngw"
     Environment = "${var.environment}"
   }
 }

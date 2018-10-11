@@ -10,10 +10,10 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags {
-    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-Public-Subnet-${count.index+1}"
+    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-public-subnet-${count.index+1}"
     Environment = "${var.environment}"
     AZ          = "${element(var.availability_zones, count.index)}"
-    Type        = "Public"
+    Type        = "public"
   }
 }
 
@@ -28,10 +28,10 @@ resource "aws_subnet" "private_subnet" {
   availability_zone       = "${element(var.availability_zones, count.index)}"
 
   tags {
-    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-Private-Subnet-${count.index+1}"
+    Name        = "${var.environment}-${element(var.availability_zones, count.index)}-private-subnet-${count.index+1}"
     Environment = "${var.environment}"
     AZ          = "${element(var.availability_zones, count.index)}"
-    Type        = "Private"
+    Type        = "private"
   }
 }
 

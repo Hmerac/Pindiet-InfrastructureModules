@@ -3,7 +3,7 @@
 ##################################################
 # Default VPC Security Group which allows all ingress/egress rules
 resource "aws_security_group" "default_vpc_sg" {
-  name        = "${var.environment}-VPC-Default-SG"
+  name        = "${var.environment}-vpc-default-sg"
   description = "Default security group to allow inbound/outbound from the VPC"
   vpc_id      = "${aws_vpc.vpc.id}"
   depends_on  = ["aws_vpc.vpc"]
@@ -23,7 +23,7 @@ resource "aws_security_group" "default_vpc_sg" {
   }
 
   tags {
-    Name        = "${var.environment}-VPC-Default-SG"
+    Name        = "${var.environment}-vpc-default-sg"
     Environment = "${var.environment}"
   }
 }

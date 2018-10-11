@@ -1,7 +1,14 @@
+##################################################
+########             Backend              ########
+##################################################
+# Configure backend remote state with S3
 terraform {
   backend "s3" {}
 }
 
+##################################################
+########                ALB               ########
+##################################################
 resource "aws_alb" "ext_alb" {
   name                        = "${var.environment}-${var.ext_alb_name}"
   internal                    = false
@@ -20,6 +27,9 @@ resource "aws_alb" "ext_alb" {
   }
 }
 
+##################################################
+########           ALB Listener           ########
+##################################################
 resource "aws_alb_listener" "ext_alb_listener" {
   load_balancer_arn = "${aws_alb.ext_alb.arn}"
   port              = "80"
@@ -32,6 +42,9 @@ resource "aws_alb_listener" "ext_alb_listener" {
   }
 }
 
+##################################################
+########         ALB Target Group         ########
+##################################################
 resource "aws_alb_target_group" "alb_target_group" {
   name        = "${var.environment}-${var.ext_target_group_name}"
   port        = "80"
@@ -52,6 +65,7 @@ resource "aws_alb_target_group" "alb_target_group" {
   }
 }
 
+# Write output values to the state file in S3 so that other components can use it
 output "alb_target_group_id" {
   value = "${aws_alb_target_group.alb_target_group.id}"
 }
