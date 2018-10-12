@@ -29,14 +29,7 @@ resource "aws_launch_configuration" "ecs_launch_configuration" {
   key_name             = "${var.ecs_keypair_name}"
   iam_instance_profile = "${aws_iam_instance_profile.cluster-profile.id}"
   security_groups      = ["${aws_security_group.ecs-security-group.id}"]
-
-  user_data = <<EOF
-    #cloud-config
-    runcmd:
-      - mkdir /etc/ecs
-      - echo ECS_CLUSTER=${var.cluster_name} > /etc/ecs/ecs.config
-      - echo ECS_ENGINE_TASK_CLEANUP_WAIT_DURATION=30m >> /etc/ecs/ecs.config
-EOF
+  user_data = "${data.template_file.user_data.rendered}"
 }
 
 

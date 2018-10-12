@@ -4,7 +4,7 @@
 # Create Security Group for Bastion
 resource "aws_security_group" "bastion_security_group" {
   name        = "${var.bastion_name}-sg"
-  description = "Allows only port 22 for VPC"
+  description = "Allows only port 22 for all"
   vpc_id      = "${data.terraform_remote_state.vpc_state.vpc_id}"
 
   ingress {
@@ -12,7 +12,7 @@ resource "aws_security_group" "bastion_security_group" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allows only port 22 for VPC"
+    description = "Allows only port 22 for all"
   }
 
   egress {

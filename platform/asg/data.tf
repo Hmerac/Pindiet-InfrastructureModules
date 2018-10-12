@@ -12,6 +12,14 @@ data "aws_ami" "ecs_ami" {
   }
 }
 
+data "template_file" "user_data" {
+  template = "${file("${path.module}/scripts/user-data.sh")}"
+
+  vars {
+    cluster_name = "${var.cluster_name}"
+  }
+}
+
 data "terraform_remote_state" "vpc_state" {
   backend = "s3"
 
