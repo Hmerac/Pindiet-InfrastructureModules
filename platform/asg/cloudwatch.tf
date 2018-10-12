@@ -36,3 +36,20 @@ resource "aws_cloudwatch_metric_alarm" "schedulable_containers_low_alert" {
   threshold          = "${var.schedulable_containers_low_threshold}"
   depends_on = ["aws_cloudwatch_metric_alarm.schedulable_containers_high_alert"]
 }
+
+resource "aws_cloudwatch_event_rule" "event_rule" {
+  name            = "${var.cluster_name}-schedulecontainer"
+  description     = "${var.cluster_name}-ScheduleContainer triggers lambda for instance scaling"
+  schedule_expression = "rate(1 minute)"
+}
+
+
+resource "aws_cloudwatch_event_target" "event_target" {
+  rule      = "${aws_cloudwatch_event_rule.event_rule.name}"
+  arn       = "${aws_lambda_function.lambda_function.arn}"
+  input = <<INPUT
+  {
+     "ECS_CLUSTER" : "${var.cluster_name}"
+  }
+INPUT
+}

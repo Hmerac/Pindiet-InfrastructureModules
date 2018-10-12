@@ -1,8 +1,8 @@
 import datetime
 import dateutil
 
-CONTAINER_MAX_CPU = 512
-CONTAINER_MAX_MEM = 1024
+CONTAINER_MAX_CPU = 256
+CONTAINER_MAX_MEM = 256
 
 def lambda_handler(event, context):
     cluster = event["ECS_CLUSTER"]

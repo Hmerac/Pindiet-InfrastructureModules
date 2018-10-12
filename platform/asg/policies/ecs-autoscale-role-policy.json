@@ -2,18 +2,21 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "cloudwatch:*",
-        "sns:*",
-        "ec2:Describe*",
-        "ec2:CreateNetworkInterface",
-        "ec2:DeleteNetworkInterface",
-        "ec2:DescribeNetworkInterfaces",
-        "ecs:*",
-        "autoscaling:Describe*",
-        "logs:*"
-      ],
       "Effect": "Allow",
+      "Action": [
+        "ecs:*",
+        "ec2:*",
+        "elasticloadbalancing:*",
+        "ecr:*",
+        "dynamodb:*",
+        "cloudwatch:*",
+        "s3:*",
+        "rds:*",
+        "sqs:*",
+        "sns:*",
+        "logs:*",
+        "ssm:*"
+      ],
       "Resource": "*"
     }
   ]
