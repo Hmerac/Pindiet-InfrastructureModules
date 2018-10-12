@@ -15,7 +15,8 @@
         "sqs:*",
         "sns:*",
         "logs:*",
-        "ssm:*"
+        "ssm:*",
+        "ds:*"
       ],
       "Resource": "*"
     }
