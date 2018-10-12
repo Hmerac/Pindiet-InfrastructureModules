@@ -26,7 +26,7 @@ resource "aws_launch_configuration" "ecs_launch_configuration" {
   name                 = "${var.environment}-${var.cluster_name}-launch-configuration"
   image_id             = "${data.aws_ami.ecs_ami.id}"
   instance_type        = "${var.instance_type}"
-  key_name             = "${var.key_name}"
+  key_name             = "${var.ecs_keypair_name}"
   iam_instance_profile = "${aws_iam_instance_profile.cluster-profile.id}"
   security_groups      = ["${aws_security_group.ecs-security-group.id}"]
 
