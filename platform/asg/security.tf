@@ -4,7 +4,7 @@
 # Create Security Group for ECS Instances
 
 resource "aws_security_group" "ecs-security-group" {
-  name        = "${var.cluster_name}-ecs-sg"
+  name        = "${var.environment}-${var.cluster_name}-ecs-sg"
   description = "Allows ports 22 and 32768-65535 for clusters"
   vpc_id      = "${data.terraform_remote_state.vpc_state.vpc_id}"
 

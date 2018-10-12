@@ -52,7 +52,7 @@ resource "aws_autoscaling_policy" "scale_up_policy" {
   adjustment_type        = "ChangeInCapacity"
   autoscaling_group_name = "${aws_autoscaling_group.ecs_asg.name}"
   cooldown               = "300"
-  name                   = "${var.cluster_name}-asg-scaleup-policy"
+  name                   = "${var.environment}-${var.cluster_name}-asg-scaleup-policy"
   scaling_adjustment     = "${var.number_of_instance_to_scale_up}"
   depends_on = ["aws_autoscaling_group.ecs_asg"]
 }
@@ -65,7 +65,7 @@ resource "aws_autoscaling_policy" "scale_down_policy" {
   adjustment_type        = "ChangeInCapacity"
   autoscaling_group_name = "${aws_autoscaling_group.ecs_asg.name}"
   cooldown               = "300"
-  name                   = "${var.cluster_name}-asg-scaledown-policy"
+  name                   = "${var.environment}-${var.cluster_name}-asg-scaledown-policy"
   scaling_adjustment     = "${var.number_of_instance_to_scale_down}"
   depends_on = ["aws_autoscaling_group.ecs_asg"]
 }
