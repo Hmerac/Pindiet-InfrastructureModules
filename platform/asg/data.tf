@@ -1,3 +1,7 @@
+##################################################
+########          AMI Data Source         ########
+##################################################
+# Data source for retrieving related AMIs
 data "aws_ami" "ecs_ami" {
   most_recent = true
 
@@ -12,6 +16,10 @@ data "aws_ami" "ecs_ami" {
   }
 }
 
+##################################################
+########             Template             ########
+##################################################
+# Render initialization script so that it gets executed when instance boots
 data "template_file" "user_data" {
   template = "${file("${path.module}/scripts/user-data.sh")}"
 
@@ -20,6 +28,10 @@ data "template_file" "user_data" {
   }
 }
 
+##################################################
+########            State Data            ########
+##################################################
+# Create data resource to retrieve required VPC data from its state file in S3
 data "terraform_remote_state" "vpc_state" {
   backend = "s3"
 

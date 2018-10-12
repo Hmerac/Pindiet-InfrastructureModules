@@ -1,3 +1,7 @@
+##################################################
+########              Lambda              ########
+##################################################
+# Create a Lambda to collect related metrics and write them to CW after processing
 resource "aws_lambda_function" "lambda_function" {
   function_name    = "${var.cluster_name}-instance-monitoring"
   filename         = "${file("${path.module}/scripts/instance-monitoring.py")}"
@@ -14,6 +18,10 @@ resource "aws_lambda_function" "lambda_function" {
   }
 }
 
+##################################################
+########        Lambda Permission         ########
+##################################################
+# Appropriate permissions for related Lambda script
 resource "aws_lambda_permission" "allow_cloudwatch" {
   statement_id    = "${aws_cloudwatch_event_rule.event_rule.name}"
   action = "lambda:InvokeFunction"

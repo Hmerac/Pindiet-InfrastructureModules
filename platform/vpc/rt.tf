@@ -6,7 +6,7 @@ resource "aws_route_table" "public_route_table" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "${var.environment}-Public-RT"
+    Name        = "${var.environment}-public-rt"
     Environment = "${var.environment}"
   }
 }
@@ -34,7 +34,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id = "${aws_vpc.vpc.id}"
 
   tags {
-    Name        = "${var.environment}-Private-RT"
+    Name        = "${var.environment}-private-rt"
     Environment = "${var.environment}"
   }
 }

@@ -1,3 +1,7 @@
+##################################################
+########             CW Alarm             ########
+##################################################
+# Create alarm for High Schedulable Container metric
 resource "aws_cloudwatch_metric_alarm" "schedulable_containers_high_alert" {
   actions_enabled     = true
   alarm_actions       = ["${aws_autoscaling_policy.scale_up_policy.arn}"]
@@ -17,6 +21,10 @@ resource "aws_cloudwatch_metric_alarm" "schedulable_containers_high_alert" {
   threshold          = "${var.schedulable_containers_high_threshold}"
 }
 
+##################################################
+########             CW Alarm             ########
+##################################################
+# Create alarm for Low Schedulable Container metric
 resource "aws_cloudwatch_metric_alarm" "schedulable_containers_low_alert" {
   actions_enabled     = true
   alarm_actions       = ["${aws_autoscaling_policy.scale_down_policy.arn}"]
@@ -37,13 +45,20 @@ resource "aws_cloudwatch_metric_alarm" "schedulable_containers_low_alert" {
   depends_on = ["aws_cloudwatch_metric_alarm.schedulable_containers_high_alert"]
 }
 
+##################################################
+########             CW Event             ########
+##################################################
+# Create CW Event for triggering Schedulable Container Lambda script
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name            = "${var.cluster_name}-schedulecontainer"
   description     = "${var.cluster_name}-ScheduleContainer triggers lambda for instance scaling"
   schedule_expression = "rate(1 minute)"
 }
 
-
+##################################################
+########             CW Event             ########
+##################################################
+# Create CW Event Target for Lambda script
 resource "aws_cloudwatch_event_target" "event_target" {
   rule      = "${aws_cloudwatch_event_rule.event_rule.name}"
   arn       = "${aws_lambda_function.lambda_function.arn}"

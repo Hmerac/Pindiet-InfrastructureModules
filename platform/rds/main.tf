@@ -9,6 +9,7 @@ terraform {
 ##################################################
 ########           RDS Instance           ########
 ##################################################
+# TODO: Configure snapshotting
 # Create MySQL RDS Instance
 resource "aws_db_instance" "rds" {
   identifier             = "${var.environment}-${var.identifier}"

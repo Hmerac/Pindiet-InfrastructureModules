@@ -1,7 +1,15 @@
+##################################################
+########             Backend              ########
+##################################################
+# Configure backend remote state with S3
 terraform {
   backend "s3" {}
 }
 
+##################################################
+########             ASG Group            ########
+##################################################
+# Autoscaling group for ECS Services
 resource "aws_autoscaling_group" "ecs_asg" {
   name                 = "${var.environment}-${var.cluster_name}-asg"
   launch_configuration = "${aws_launch_configuration.ecs_launch_configuration.name}"
@@ -22,6 +30,10 @@ resource "aws_autoscaling_group" "ecs_asg" {
   }
 }
 
+##################################################
+########       Launch Configuration       ########
+##################################################
+# Launch configuration for ECS ASG related instances
 resource "aws_launch_configuration" "ecs_launch_configuration" {
   name                 = "${var.environment}-${var.cluster_name}-launch-configuration"
   image_id             = "${data.aws_ami.ecs_ami.id}"
@@ -32,7 +44,10 @@ resource "aws_launch_configuration" "ecs_launch_configuration" {
   user_data = "${data.template_file.user_data.rendered}"
 }
 
-
+##################################################
+########            ASG Policy            ########
+##################################################
+# Scale up policy for ASG
 resource "aws_autoscaling_policy" "scale_up_policy" {
   adjustment_type        = "ChangeInCapacity"
   autoscaling_group_name = "${aws_autoscaling_group.ecs_asg.name}"
@@ -42,6 +57,10 @@ resource "aws_autoscaling_policy" "scale_up_policy" {
   depends_on = ["aws_autoscaling_group.ecs_asg"]
 }
 
+##################################################
+########            ASG Policy            ########
+##################################################
+# Scale down policy for ASG
 resource "aws_autoscaling_policy" "scale_down_policy" {
   adjustment_type        = "ChangeInCapacity"
   autoscaling_group_name = "${aws_autoscaling_group.ecs_asg.name}"
