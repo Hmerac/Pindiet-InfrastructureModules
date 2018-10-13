@@ -14,7 +14,7 @@ resource "aws_lambda_function" "lambda_function" {
   vpc_config {
     # TODO: Configure Security Group for the Instances inside Cluster later on
     security_group_ids = ["${aws_security_group.ecs-security-group.id}"]
-    subnet_ids         = ["${data.terraform_remote_state.vpc_state.private_subnet_list}"]
+    subnet_ids         = ["${data.terraform_remote_state.vpc_state.private_subnet_id_list}"]
   }
 }
 
