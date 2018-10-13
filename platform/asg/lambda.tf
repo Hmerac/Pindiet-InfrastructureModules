@@ -3,7 +3,7 @@
 ##################################################
 # Create a Lambda to collect related metrics and write them to CW after processing
 resource "aws_lambda_function" "lambda_function" {
-  function_name    = "${var.environment}-${var.cluster_name}-instance-monitoring"
+  function_name    = "${var.environment}-instance-monitoring"
   filename         = "${file("${path.module}/scripts/instance-monitoring.py")}"
   role             = "${aws_iam_role.ecs_autoscale_role.arn}"
   handler          = "${var.handler}" #index.lambda_handler
