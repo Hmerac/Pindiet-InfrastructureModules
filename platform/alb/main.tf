@@ -73,3 +73,7 @@ output "alb_target_group_id" {
 output "alb_endpoint" {
   value = "${aws_alb.ext_alb.dns_name}"
 }
+
+output "alb_arn" {
+  value = "${aws_alb.ext_alb.arn}"
+}
