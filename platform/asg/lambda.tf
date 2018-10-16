@@ -3,13 +3,14 @@
 ##################################################
 # Create a Lambda to collect related metrics and write them to CW after processing
 resource "aws_lambda_function" "lambda_function" {
-  function_name    = "${var.environment}-inst-mon"
-  filename         = "${file("${path.module}/scripts/instance-monitoring.py")}"
+  function_name    = "${var.environment}-instance-monitoring"
+  filename         = "instance-monitoring/instance-monitoring.zip"
+  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
   role             = "${aws_iam_role.ecs_autoscale_role.arn}"
-  handler          = "${var.handler}" #index.lambda_handler
-  runtime          = "${var.runtime}" #python2.7
-  timeout          = "${var.timeout}" #10
-  memory_size      = "${var.memory_size}" #128
+  handler          = "${var.handler}"
+  runtime          = "${var.runtime}"
+  timeout          = "${var.timeout}"
+  memory_size      = "${var.memory_size}"
 
   vpc_config {
     # TODO: Configure Security Group for the Instances inside Cluster later on
@@ -28,4 +29,14 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
   function_name = "${aws_lambda_function.lambda_function.function_name}"
   principal = "events.amazonaws.com"
   source_arn = "${aws_cloudwatch_event_rule.event_rule.arn}"
+}
+
+##################################################
+########           Archive File           ########
+##################################################
+# Make a .zip file from .py file to use it with Lambda Function
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "scripts"
+  output_path = "instance-monitoring/instance-monitoring.zip"
 }
