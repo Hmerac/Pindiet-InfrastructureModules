@@ -2,7 +2,6 @@
 ########                 SG               ########
 ##################################################
 # Create Security Group for ECS Instances
-
 resource "aws_security_group" "ecs-security-group" {
   name        = "${var.environment}-${var.cluster_name}-ecs-sg"
   description = "Allows ports 22 and 32768-65535 for clusters"
