@@ -24,6 +24,7 @@ resource "aws_db_instance" "rds" {
   db_subnet_group_name   = "${aws_db_subnet_group.rds_subnet_group.id}"
   vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
   skip_final_snapshot    = true
+  storage_encrypted      = true
 
   tags {
     Name        = "${var.environment}-${var.database_name}"
@@ -31,6 +32,24 @@ resource "aws_db_instance" "rds" {
   }
 }
 
+##################################################
+########             KMS Key              ########
+##################################################
+# Create a CMK to encrypt RDS
+/*resource "aws_kms_key" "rds_encryption_key" {
+  description = "CMK to encrypt RDS"
+}*/
+
+##################################################
+########          KMS Key Alias           ########
+##################################################
+# Create an alias for RDS CMK
+/*resource "aws_kms_alias" "rds_encryption_key_alias" {
+  name          = "alias/rds-encryption-key"
+  target_key_id = "${aws_kms_key.rds_encryption_key.id}"
+}*/
+
+# Write output values to the state file in S3 so that other components can use it
 output "rds_endpoint" {
   value = "${aws_db_instance.rds.endpoint}"
 }
